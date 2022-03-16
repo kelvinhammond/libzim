@@ -48,6 +48,9 @@ namespace zim
    * The `Archive` is the main class to access content in a zim file.
    * `Archive` are lightweight object and can be copied easily.
    *
+   * An `Archive` is read-only, and internal states (as caches) are protected
+   * from race-condition. So all methods of `Archive` are threadsafe.
+   *
    * All methods of archive may throw an `ZimFileFormatError` if the file is invalid.
    */
   class Archive
@@ -481,6 +484,13 @@ namespace zim
   entry_index_type _toPathOrder<EntryOrder::efficientOrder>(const FileImpl& file, entry_index_type idx);
 
 
+  /**
+   * A range of entries in an `Archive`.
+   *
+   * `EntryRange` represent a range of entries in a specific order.
+   *
+   * A `EntryRange` can't be modified and so is threadsafe.
+   */
   template<EntryOrder order>
   class Archive::EntryRange {
     public:
@@ -516,6 +526,14 @@ private:
       entry_index_type m_end;
   };
 
+  /**
+   * A iterator on an `Archive`.
+   *
+   * `Archive::iterator` store a internal state which is not protected
+   * from race-condition. It is not threadsafe.
+   *
+   * A `EntryRange` can't be modified and so is threadsafe.
+   */
   template<EntryOrder order>
   class Archive::iterator : public std::iterator<std::bidirectional_iterator_tag, Entry>
   {

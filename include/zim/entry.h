@@ -31,6 +31,11 @@ namespace zim
   class Dirent;
   class FileImpl;
 
+  /**
+   * A entry in an `Archive`.
+   *
+   * All `Entry`'s methods are threadsafe.
+   */
   class Entry
   {
     public:

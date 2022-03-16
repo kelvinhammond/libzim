@@ -30,6 +30,11 @@ namespace zim
   class Dirent;
   class FileImpl;
 
+  /**
+   * A `Item` in an `Archive`
+   *
+   * All `Item`'s methods are threadsafe.
+   */
   class Item
   {
     public: // types
